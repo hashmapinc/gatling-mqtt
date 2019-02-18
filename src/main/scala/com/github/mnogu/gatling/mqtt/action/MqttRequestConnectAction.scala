@@ -1,14 +1,12 @@
 package com.github.mnogu.gatling.mqtt.action
 
 import com.github.mnogu.gatling.mqtt.protocol.MqttProtocol
-import io.gatling.commons.stats.OK
-import io.gatling.commons.util.ClockSingleton._
+import io.gatling.commons.util.{Clock, DefaultClock}
 import io.gatling.commons.validation.Validation
 import io.gatling.core.CoreComponents
 import io.gatling.core.Predef._
 import io.gatling.core.action.{Action, ExitableAction}
 import io.gatling.core.session._
-import io.gatling.core.stats.message.ResponseTimings
 import io.gatling.core.util.NameGen
 import org.fusesource.mqtt.client.{Callback, MQTT}
 
@@ -175,7 +173,7 @@ class MqttRequestConnectAction(
 
       val connection = resolvedMqtt.callbackConnection()
 
-      val requestStartDate = nowMillis
+      val requestStartDate = clock.nowMillis
 
       connection.connect(new Callback[Void] {
         override def onSuccess(void: Void): Unit = {
@@ -188,4 +186,6 @@ class MqttRequestConnectAction(
       })
     }
   }
+
+  override def clock: Clock = new DefaultClock
 }

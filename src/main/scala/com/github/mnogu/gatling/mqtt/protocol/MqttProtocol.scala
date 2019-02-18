@@ -36,7 +36,7 @@ object MqttProtocol {
       maxReadRate = None,
       maxWriteRate = None))
 
-  val MqttProtocolKey = new ProtocolKey {
+  val MqttProtocolKey = new ProtocolKey[MqttProtocol, MqttComponents] {
 
     type Protocol = MqttProtocol
     type Components = MqttComponents
@@ -45,7 +45,7 @@ object MqttProtocol {
 
     def defaultProtocolValue(configuration: GatlingConfiguration): MqttProtocol = MqttProtocol(configuration)
 
-    def newComponents(system: ActorSystem, coreComponents: CoreComponents): MqttProtocol => MqttComponents = {
+    def newComponents(coreComponents: CoreComponents): MqttProtocol => MqttComponents = {
 
       mqttProdocol => {
         val mqttComponents = MqttComponents (

@@ -18,13 +18,13 @@ Additionally this extended version doesn't take into account connect and disconn
 
 ### Cloning this repository
 
-    $ git clone https://github.com/thingsboard/gatling-mqtt.git
+    $ git clone https://github.com/hashmapinc/gatling-mqtt
     $ cd gatling-mqtt
     
 ### Scala
     $ sudo apt-get remove scala-library scala
-    $ sudo wget http://scala-lang.org/files/archive/scala-2.11.8.deb
-    $ sudo dpkg -i scala-2.11.8.deb
+    $ sudo wget http://scala-lang.org/files/archive/scala-2.12.8.deb
+    $ sudo dpkg -i scala-2.12.8.deb
 
 ### Install SBT
     $ curl -L -o sbt.deb http://dl.bintray.com/sbt/debian/sbt-0.13.17.deb
@@ -39,16 +39,20 @@ If you want to change the version of Gatling used to create a jar file,
 change the following line in [`build.sbt`](build.sbt):
 
 ```scala
-"io.gatling" % "gatling-core" % "2.2.3" % "provided",
+"io.gatling" % "gatling-core" % "3.0.3" % "provided",
 ```
 
 and run `sbt assembly`.
+
+### Install maven local gatling-mqtt jar
+
+    $ bin/install-local-gatling-mqtt.sh
 
 ### Putting the jar file to lib directory
 
 Put the jar file to `lib` directory in Gatling:
 
-    $ cp target/scala-2.11/gatling-mqtt-assembly-*.jar /path/to/gatling-charts-highcharts-bundle-2.2.*/lib
+    $ cp target/scala-2.12/gatling-mqtt-assembly-*.jar /path/to/gatling-charts-highcharts-bundle-2.2.*/lib
 
 ###  Creating a simulation file
 
@@ -136,7 +140,7 @@ class MqttSimulation extends Simulation {
   setUp(
     scn
        // linearly connect 10 devices over 1 seconds and send 100 publish messages
-      .inject(rampUsers(10) over (1 seconds))
+      .inject(rampUsers(10) during (1 seconds))
   ).protocols(mqttConf)
 }
 ```
@@ -196,7 +200,7 @@ class MqttSimulation extends Simulation {
   setUp(
     scn
        // linearly connect 10 devices over 1 seconds and send 100 publish messages
-      .inject(rampUsers(10) over (1 seconds))
+      .inject(rampUsers(10) during (1 seconds))
   ).protocols(mqttConf)
 }
 ```
